@@ -1,29 +1,28 @@
 import { FC } from 'react';
-import ArticlePreviewProps from '@/components/ArticlePreview/config/props';
-import { getLongestSubstring } from '@/utils/getLongestSubstring';
-import { formatDate } from '@/libs/date-fns/formatDate';
 import LinkOverlay from '@/components/UI/LinkOverlay';
+import ArticleContainer from '@/components/ArticlePreview/ArticleContainer';
+import { IArticle } from '@/components/ArticlePreview/types';
+import ArticleHeader from '@/components/ArticlePreview/ArticleHeader';
+import { stripDomain } from '@/utils/stripDomain';
 
-const ArticlePreview: FC<ArticlePreviewProps> = ({ article }) => {
+export interface Props {
+  article: IArticle;
+}
+
+const ArticlePreview: FC<Props> = ({ article }) => {
   return (
-    <div
-      className="bg-gray-50 bg-cover rounded-xl overflow-hidden bg-top text-white relative"
-      style={{
-        backgroundImage: `url(${article.urlToImage})`,
-      }}
-    >
-      <section className="backdrop-blur-sm bg-black/50 p-4 h-full flex flex-col justify-between">
-        <h1 className="text-xl uppercase font-bold w-fit">{getLongestSubstring(article.title)}</h1>
-        <div className="flex justify-between flex-row text-sm border-t-2 mt-1">
-          <p>{formatDate(article.publishedAt)}</p>
-          <p>
-            <i>from: </i>
-            {article.source.name}
-          </p>
-        </div>
-        <LinkOverlay url={article.url} label={`Read article at: ${article.source.name}`} />
+    <ArticleContainer imageUrl={article.urlToImage}>
+      <section className="backdrop-blur-sm bg-black/60 p-4 h-fit">
+        <ArticleHeader
+          title={article.title}
+          date={article.publishedAt}
+          source={stripDomain(article.source.name)}
+          author={article.author}
+        />
+        <p className="mt-4">{article.description}</p>
+        <LinkOverlay url={article.url} label={`Read article at: ${stripDomain(article.source.name)}`} />
       </section>
-    </div>
+    </ArticleContainer>
   );
 };
 export default ArticlePreview;
