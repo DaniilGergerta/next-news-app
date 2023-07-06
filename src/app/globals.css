@@ -4,6 +4,7 @@
 
 :root {
   --background-color: #EFF1F2;
+  --scrollbar-width: 8px;
 }
 
 body {
@@ -11,17 +12,17 @@ body {
 }
 
 .thin-scrollbar::-webkit-scrollbar {
-  width: 10px;
+  width: var(--scrollbar-width);
 }
 
 .thin-scrollbar::-webkit-scrollbar-track {
   background: #f1f1f1;
-  border-radius: 10px;
+  border-radius: var(--scrollbar-width);
 }
 
 .thin-scrollbar::-webkit-scrollbar-thumb {
   background: #888;
-  border-radius: 10px;
+  border-radius: var(--scrollbar-width);
 }
 
 .thin-scrollbar::-webkit-scrollbar-thumb:hover {

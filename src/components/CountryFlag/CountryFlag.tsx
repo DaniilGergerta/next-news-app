@@ -2,16 +2,20 @@
 
 import { COUNTRY_CODES, DEFAULT_COUNTRY_CODE } from '@/common/constants';
 import FlagImage from '@/components/UI/FlagImage';
-import Arrow from '@/components/Icons/Arrow';
-import { FC, FormEvent, useCallback, useRef, useState } from 'react';
+import { FC, FormEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { TCountryCode } from '@/common/types';
 import { getLocal } from '@/libs/localStorage/getLocal';
+import Arrow from '@/components/Icons/Arrow';
 
 const CountryFlag: FC = () => {
   const input = useRef<HTMLInputElement>(null);
   const [collapse, setCollapse] = useState<boolean>(true);
-  const [country, setCountry] = useState<TCountryCode>(getLocal('COUNTRY_CODES', DEFAULT_COUNTRY_CODE));
+  const [country, setCountry] = useState<TCountryCode>('');
   const [search, setSearch] = useState<string>('');
+
+  useEffect(() => {
+    setCountry(getLocal('COUNTRY_CODES', DEFAULT_COUNTRY_CODE));
+  }, []);
 
   const openDropdown = useCallback(() => {
     setCollapse(false);
@@ -30,7 +34,7 @@ const CountryFlag: FC = () => {
     } else {
       closeDropdown();
     }
-  }, [closeDropdown, collapse, openDropdown]);
+  }, [collapse]);
 
   const handleSubmit = useCallback(
     (event: FormEvent) => {
@@ -42,19 +46,16 @@ const CountryFlag: FC = () => {
 
       closeDropdown();
     },
-    [closeDropdown, search]
+    [search]
   );
 
-  const handleSelect = useCallback(
-    (country: string) => {
-      setCountry(country);
-      closeDropdown();
-    },
-    [closeDropdown]
-  );
+  const handleSelect = useCallback((country: string) => {
+    setCountry(country);
+    closeDropdown();
+  }, []);
 
   return (
-    <section className="relative">
+    <section className="relative" onBlur={handleCollapse}>
       <div
         className="p-2 cursor-pointer hover:bg-gray-500/50 transition-colors rounded-sm relative"
         onClick={handleCollapse}
@@ -70,7 +71,7 @@ const CountryFlag: FC = () => {
             value={search}
             maxLength={2}
           />
-          <Arrow direction={collapse ? 'left' : 'down'} size={6} thickness={2.5} />
+          <Arrow direction={collapse ? 'down' : 'up'} size={6} thickness={2.5} />
         </form>
       </div>
       <div
