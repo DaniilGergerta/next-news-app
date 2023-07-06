@@ -1,14 +1,18 @@
+'use client';
+
 import LinkOverlay from '@/components/UI/LinkOverlay';
 import ArticleContainer from '@/components/ArticlePreview/ArticleContainer';
 import { IArticle } from '@/components/ArticlePreview/types';
 import ArticleHeader from '@/components/ArticlePreview/ArticleHeader';
 import { stripDomain } from '@/utils/stripDomain';
+import { useStoreState } from 'easy-peasy';
 
 export interface Props {
   article: IArticle;
 }
 
 const ArticlePreview = ({ article }: Props) => {
+
   return (
     <ArticleContainer imageUrl={article.urlToImage}>
       <section className="backdrop-blur-sm bg-black/60 p-4 h-fit">

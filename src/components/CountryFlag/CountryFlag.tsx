@@ -7,13 +7,15 @@ import { TCountryCode } from '@/common/types';
 import { getLocal } from '@/libs/localStorage/getLocal';
 import Arrow from '@/components/Icons/Arrow';
 import { useClickOutside, useScrollLock } from '@mantine/hooks';
+import { useStoreActions, useStoreState } from '@/store';
 
 const CountryFlag: FC = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [collapse, setCollapse] = useState<boolean>(true);
-  const [country, setCountry] = useState<TCountryCode>('');
   const [search, setSearch] = useState<string>('');
   const [_, setScrollLocked] = useScrollLock(false);
+  const { country } = useStoreState((state) => state);
+  const { setCountry, setQuery } = useStoreActions((actions) => actions)
 
   useEffect(() => {
     setCountry(getLocal('COUNTRY_CODES', DEFAULT_COUNTRY_CODE));
@@ -54,6 +56,7 @@ const CountryFlag: FC = () => {
   );
 
   const handleSelect = useCallback((country: string) => {
+    setQuery('');
     setCountry(country);
     closeDropdown();
   }, []);

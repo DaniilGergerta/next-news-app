@@ -1,18 +1,40 @@
 'use client';
 
-import { FC, useCallback, useState } from 'react';
+import { FC, KeyboardEvent, useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
+import { useStoreActions, useStoreState } from '@/store';
+import { filtersConfig } from '@/common/config';
 
 const SearchBar: FC = () => {
+  const { setQuery, setFilterBy, getNews } = useStoreActions((actions) => actions);
+  const { country, query } = useStoreState((state) => state);
   const [search, setSearch] = useState<string>('');
+  const [isFiltersOpen, setIsFiltersOpen] = useState<boolean>(false);
 
   const handleFilterButton = useCallback(() => {
-    // Open Filter Dropdown
+    setIsFiltersOpen(prev => !prev);
   }, []);
 
   const handleSubmitSearch = useCallback(() => {
     // Dispatch search query Dropdown
   }, []);
+
+  const handleFilterOnClick = useCallback((title: string) => {
+    if (title === 'All') {
+      query ? getNews({ query: query.toLocaleLowerCase() }) : getNews({ country: country.toLocaleLowerCase() });
+    }
+    setFilterBy(title);
+  }, [])
+
+  const handleKeyDown = useCallback((event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      setQuery(search);
+    }
+  }, [search])
+
+  useEffect(() => {
+    setSearch('')
+  }, [country])
 
   return (
     <div className="w-full relative">
@@ -21,6 +43,7 @@ const SearchBar: FC = () => {
         type="text"
         placeholder="Search..."
         onChange={(e) => setSearch(e.target.value)}
+        onKeyDown={handleKeyDown}
         value={search}
       />
       <div className="absolute right-0 top-0 flex flex-row h-full gap-1.5">
@@ -40,6 +63,22 @@ const SearchBar: FC = () => {
             height={16}
           />
         </button>
+        {isFiltersOpen && (
+          <div className="absolute top-full left-0 bg-gray-200 rounded-[5px] w-full overflow-hidden">
+            <ul className="py-2">
+              {filtersConfig.map(filter => (
+                <li key={filter.id}>
+                  <button
+                    className="block w-full px-4 py-2 text-sm text-gray-800 hover:bg-gray-100"
+                    onClick={() => handleFilterOnClick(filter.title)}
+                  >
+                    {filter.title}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
     </div>
   );
