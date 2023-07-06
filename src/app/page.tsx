@@ -1,5 +1,8 @@
-import HomeView from '@/views/Home'
+// noinspection JSUnusedGlobalSymbols
 
-export default function Home() {
-  return <HomeView />
-}
+import HomeView from '@/views/Home';
+
+const Home = () => {
+  return <HomeView />;
+};
+export default Home;

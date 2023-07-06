@@ -1,17 +1,19 @@
 'use client';
 
 import { COUNTRY_CODES, DEFAULT_COUNTRY_CODE } from '@/common/constants';
-import FlagImage from '@/components/UI/FlagImage';
+import FlagImage from '../FlagImage';
 import { FC, FormEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { TCountryCode } from '@/common/types';
 import { getLocal } from '@/libs/localStorage/getLocal';
 import Arrow from '@/components/Icons/Arrow';
+import { useClickOutside, useScrollLock } from '@mantine/hooks';
 
 const CountryFlag: FC = () => {
-  const input = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const [collapse, setCollapse] = useState<boolean>(true);
   const [country, setCountry] = useState<TCountryCode>('');
   const [search, setSearch] = useState<string>('');
+  const [_, setScrollLocked] = useScrollLock(false);
 
   useEffect(() => {
     setCountry(getLocal('COUNTRY_CODES', DEFAULT_COUNTRY_CODE));
@@ -20,12 +22,14 @@ const CountryFlag: FC = () => {
   const openDropdown = useCallback(() => {
     setCollapse(false);
     setSearch('');
-    input.current?.select();
+    inputRef.current?.select();
+    setScrollLocked(true);
   }, []);
 
   const closeDropdown = useCallback(() => {
     setCollapse(true);
-    input.current?.blur();
+    inputRef.current?.blur();
+    setScrollLocked(false);
   }, []);
 
   const handleCollapse = useCallback(() => {
@@ -54,16 +58,15 @@ const CountryFlag: FC = () => {
     closeDropdown();
   }, []);
 
+  const containerRef = useClickOutside(closeDropdown);
+
   return (
-    <section className="relative" onBlur={handleCollapse}>
-      <div
-        className="p-2 cursor-pointer hover:bg-gray-500/50 transition-colors rounded-sm relative"
-        onClick={handleCollapse}
-      >
+    <section ref={containerRef} className="relative" onClick={handleCollapse}>
+      <div className="p-2 cursor-pointer hover:bg-gray-500/50 transition-colors rounded-sm relative">
         <form className="flex flex-row gap-1.5 items-center" onSubmit={handleSubmit}>
           <FlagImage countryCode={country} size={16} />
           <input
-            ref={input}
+            ref={inputRef}
             type="text"
             className="bg-transparent text-white text-sm w-6 placeholder-white focus-visible:placeholder:text-transparent uppercase focus-visible:outline-0 cursor-pointer"
             onChange={(e) => setSearch(e.target.value)}

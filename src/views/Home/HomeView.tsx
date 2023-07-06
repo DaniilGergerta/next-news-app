@@ -1,3 +1,5 @@
+// noinspection JSUnusedGlobalSymbols
+
 import ArticlePreview from '@/components/ArticlePreview';
 import { mockData } from '@/views/Home/mockData';
 
