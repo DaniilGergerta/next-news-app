@@ -1,4 +1,3 @@
-import { FC } from 'react';
 import LinkOverlay from '@/components/UI/LinkOverlay';
 import ArticleContainer from '@/components/ArticlePreview/ArticleContainer';
 import { IArticle } from '@/components/ArticlePreview/types';
@@ -9,7 +8,7 @@ export interface Props {
   article: IArticle;
 }
 
-const ArticlePreview: FC<Props> = ({ article }) => {
+const ArticlePreview = ({ article }: Props) => {
   return (
     <ArticleContainer imageUrl={article.urlToImage}>
       <section className="backdrop-blur-sm bg-black/60 p-4 h-fit">

@@ -9,3 +9,21 @@
 body {
   background: var(--background-color)
 }
+
+.thin-scrollbar::-webkit-scrollbar {
+  width: 10px;
+}
+
+.thin-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.thin-scrollbar::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+.thin-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

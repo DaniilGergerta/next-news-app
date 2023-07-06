@@ -1,7 +1,6 @@
-import { FC } from 'react';
 import { LinkOverlayProps } from '@/components/UI/LinkOverlay/config/props';
 
-const LinkOverlay: FC<LinkOverlayProps> = ({ url, label }) => {
+const LinkOverlay = ({ url, label }: LinkOverlayProps) => {
   return (
     <a
       href={url}

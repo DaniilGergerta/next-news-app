@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import CountryFlag from '@/components/CountryFlag';
 
 const Header = () => {
   return (
@@ -13,6 +14,7 @@ const Header = () => {
           className="hover:opacity-80 transition-opacity"
         />
       </Link>
+      <CountryFlag />
     </header>
   );
 };
