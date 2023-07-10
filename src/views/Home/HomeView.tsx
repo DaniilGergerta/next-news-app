@@ -10,15 +10,9 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 export const revalidate = 60 * 60 * 24;
 
 const HomeView = () => {
-  const {
-    news,
-    country,
-    query,
-    totalPages,
-    filterBy,
-  } = useStoreState((state) => state);
+  const { news, country, query, totalPages, filterBy } = useStoreState((state) => state);
   const [page, setPage] = useState(2);
-  const getNews = useStoreActions((actions) => actions.getNews)
+  const getNews = useStoreActions((actions) => actions.getNews);
 
   useEffect(() => {
     if (filterBy) {
@@ -28,23 +22,22 @@ const HomeView = () => {
       query ? getNews({ query: query.toLocaleLowerCase() }) : getNews({ country: country.toLocaleLowerCase() });
       setPage(2);
     }
-
   }, [country, query]);
 
-  const loadMoreNews = useCallback((page: number, totalPages: number) => {
-    if (Math.ceil(totalPages / 10) >= page) {
-      query ? getNews({ query: query.toLocaleLowerCase(), page }) : getNews({ country: country.toLocaleLowerCase(), page });
+  const loadMoreNews = useCallback(
+    (page: number, totalPages: number) => {
+      if (Math.ceil(totalPages / 10) >= page) {
+        query
+          ? getNews({ query: query.toLocaleLowerCase(), page })
+          : getNews({ country: country.toLocaleLowerCase(), page });
 
-      setPage(prev => prev + 1);
-    }
-    console.log(page);
-  }, [page, totalPages]);
-
-  console.log(page);
+        setPage((prev) => prev + 1);
+      }
+    },
+    [page, totalPages]
+  );
 
   const prevScrollY = useRef(0);
-
-  console.log('News', news);
 
   useEffect(() => {
     const handleScroll = debounceFunction(() => {
@@ -78,4 +71,5 @@ const HomeView = () => {
     </section>
   );
 };
+
 export default HomeView;
