@@ -1,4 +1,5 @@
-/** @type {import('next').NextConfig} */
+const Dotenv = require('dotenv-webpack');
+
 const nextConfig = {
   images: {
     remotePatterns: [
@@ -13,6 +14,8 @@ const nextConfig = {
       test: /\.svg$/i,
       use: ['@svgr/webpack'],
     });
+
+    config.plugins.push(new Dotenv());
 
     return config;
   },

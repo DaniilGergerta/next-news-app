@@ -1,4 +1,4 @@
-export const { NEWS_API_KEY } = process.env;
+export const NEWS_API_KEY = process.env.NEWS_API_KEY;
 
 export const filtersConfig = [
   {
@@ -25,5 +25,4 @@ export const filtersConfig = [
     id: 6,
     title: 'Source Name',
   },
-  
-]
+];

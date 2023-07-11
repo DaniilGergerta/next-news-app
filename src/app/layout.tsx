@@ -12,20 +12,13 @@ import { store } from '@/store';
 
 const inter = Inter({ subsets: ['latin'] });
 
-export const metadata = {
-  title: 'Top News',
-  description: 'See the hottest news articles.',
-};
-
 const RootLayout: FC<PropsWithChildren> = ({ children }) => {
   return (
     <html lang="en">
       <body className={inter.className}>
         <StoreProvider store={store}>
           <Header />
-          <MainContainer>
-            {children}
-          </MainContainer>
+          <MainContainer>{children}</MainContainer>
         </StoreProvider>
       </body>
     </html>
